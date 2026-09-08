@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * A command-line calculator that supports only the four basic operations:
- * addition (+), subtraction (-), multiplication (*), and division (/).
+ * A command-line calculator that supports basic and extended operations:
+ * addition (+), subtraction (-), multiplication (*), division (/), modulo (%),
+ * and exponentiation (^).
  *
  * Usage:
  *   node src/calculator.js <number> <operator> <number>
@@ -23,7 +24,29 @@ const OPERATIONS = {
 
     return left / right;
   },
+  '%': modulo,
+  '^': power,
 };
+
+function modulo(a, b) {
+  if (b === 0) {
+    throw new Error('Cannot calculate modulo by zero.');
+  }
+
+  return a % b;
+}
+
+function power(base, exponent) {
+  return base ** exponent;
+}
+
+function squareRoot(n) {
+  if (n < 0) {
+    throw new Error('Cannot calculate the square root of a negative number.');
+  }
+
+  return Math.sqrt(n);
+}
 
 function calculate(leftInput, operator, rightInput) {
   const left = Number(leftInput);
@@ -36,7 +59,7 @@ function calculate(leftInput, operator, rightInput) {
   const operation = OPERATIONS[operator];
 
   if (!operation) {
-    throw new Error('Operator must be one of: +, -, *, /.');
+    throw new Error('Operator must be one of: +, -, *, /, %, ^.');
   }
 
   return operation(left, right);
@@ -63,4 +86,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { calculate };
+module.exports = { calculate, modulo, power, squareRoot };
